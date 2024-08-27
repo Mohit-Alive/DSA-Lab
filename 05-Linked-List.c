@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -7,7 +8,8 @@ struct node {
 };
 struct node* start = NULL;
 
-void createList(){
+void createList()
+{
     if (start == NULL) {
         int n;
         printf("\nEnter the number of nodes: ");
@@ -41,15 +43,14 @@ void createList(){
     else
         printf("\nThe list is already created\n");
 }
+
 void traverse()
 {
     struct node* temp;
 
-    // List is empty
     if (start == NULL)
         printf("\nList is empty\n");
 
-    // Else print the LL
     else {
         temp = start;
         while (temp != NULL) {
@@ -57,6 +58,20 @@ void traverse()
             temp = temp->link;
         }
     }
+}
+
+void insertAtFront()
+{
+    int data;
+    struct node* temp;
+    temp = malloc(sizeof(struct node));
+    printf("\nEnter number to"
+           " be inserted : ");
+    scanf("%d", &data);
+    temp->info = data;
+
+    temp->link = start;
+    start = temp;
 }
 
 void insertAtEnd()
@@ -78,20 +93,6 @@ void insertAtEnd()
     head->link = temp;
 }
 
-void insertAtFront()
-{
-    int data;
-    struct node* temp;
-    temp = malloc(sizeof(struct node));
-    printf("\nEnter number to"
-           " be inserted : ");
-    scanf("%d", &data);
-    temp->info = data;
-
-    temp->link = start;
-    start = temp;
-}
-
 void insertAtPosition()
 {
     struct node *temp, *newnode;
@@ -111,12 +112,91 @@ void insertAtPosition()
     newnode->link = temp->link;
     temp->link = newnode;
 }
- 
- int main(){
+
+void deleteFirst()
+{
+    struct node* temp;
+    if (start == NULL)
+        printf("\nList is empty\n");
+    else {
+        temp = start;
+        start = start->link;
+        free(temp);
+    }
+}
+
+void deleteEnd()
+{
+    struct node *temp, *prevnode;
+    if (start == NULL)
+        printf("\nList is Empty\n");
+    else {
+        temp = start;
+        while (temp->link != 0) {
+            prevnode = temp;
+            temp = temp->link;
+        }
+        free(temp);
+        prevnode->link = 0;
+    }
+}
+
+void deletePosition()
+{
+    struct node *temp, *position;
+    int i = 1, pos;
+
+    if (start == NULL)
+        printf("\nList is empty\n");
+
+    else {
+        printf("\nEnter index : ");
+        scanf("%d", &pos);
+        position = malloc(sizeof(struct node));
+        temp = start;
+
+        while (i < pos - 1) {
+            temp = temp->link;
+            i++;
+        }
+
+        position = temp->link;
+        temp->link = position->link;
+
+        free(position);
+    }
+}
+
+void maximum()
+{
+    int a[10];
+    int i;
+    struct node* temp;
+
+    if (start == NULL)
+        printf("\nList is empty\n");
+
+    else {
+        temp = start;
+        int max = temp->info;
+
+        while (temp != NULL) {
+            if (max < temp->info)
+                max = temp->info;
+            temp = temp->link;
+        }
+        printf("\nMaximum number "
+               "is : %d ",
+               max);
+    }
+}
+
+int main()
+{
     createList();
     int choice;
-    
-    while(1){
+    while (1) {
+
         printf("\n\t1 To see list\n");
         printf("\t2 For insertion at"
                " starting\n");
@@ -124,26 +204,49 @@ void insertAtPosition()
                " end\n");
         printf("\t4 For insertion at "
                "any position\n");
+        printf("\t5 For deletion of "
+               "first element\n");
+        printf("\t6 For deletion of "
+               "last element\n");
+        printf("\t7 For deletion of "
+               "element at any position\n");
+        printf("\t8 To find maximum among"
+               " the elements\n");
+        printf("\t9 To exit\n");
         printf("\nEnter Choice :\n");
         scanf("%d", &choice);
-        
-        
+
         switch (choice) {
-            case 1:
-                traverse();
-                break;
-            case 2:
-                insertAtFront();    
-                break;
-            case 3:
-                insertAtEnd();
-                break;
-            case 4:
-                insertAtPosition();
-            default:
-                printf("Incorrect Choice\n");
+        case 1:
+            traverse();
+            break;
+        case 2:
+            insertAtFront();
+            break;
+        case 3:
+            insertAtEnd();
+            break;
+        case 4:
+            insertAtPosition();
+            break;
+        case 5:
+            deleteFirst();
+            break;
+        case 6:
+            deleteEnd();
+            break;
+        case 7:
+            deletePosition();
+            break;
+        case 8:
+            maximum();
+            break;
+        case 9:
+            exit(1);
+            break;
+        default:
+            printf("Incorrect Choice\n");
         }
     }
-
     return 0;
- }
+}
